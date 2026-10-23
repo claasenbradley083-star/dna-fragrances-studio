@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="af">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#12243a">
+  <title>DNA Fragrances | Business Studio</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">SIGNIFICANTLY YOU</p>
+      <h1>DNA Fragrances</h1>
+      <p class="muted">Business Studio · Veilige aanlyn werkruimte</p>
+    </div>
+    <button id="signOutBtn" class="secondary hidden">Teken uit</button>
+  </header>
+
+  <main>
+    <section id="configNotice" class="notice">
+      <strong>Eenmalige opstelling nodig.</strong>
+      Voeg jou Supabase Project URL en publishable/anon key in <code>public/config.js</code> in nadat jy jou Supabase-projek geskep het.
+    </section>
+
+    <section id="authPanel" class="panel auth-panel">
+      <h2>Administrateur-aanmelding</h2>
+      <p class="muted">Gebruik die e-posadres en wagwoord wat jy in Supabase Auth geskep het. Openbare registrasie word nie deur hierdie app aangebied nie.</p>
+      <form id="loginForm">
+        <label for="email">Administrateur-e-posadres</label>
+        <input id="email" type="email" autocomplete="username" required>
+        <label for="password">Wagwoord</label>
+        <input id="password" type="password" autocomplete="current-password" required>
+        <button type="submit">Teken veilig in</button>
+        <p id="authMessage" class="message" role="status"></p>
+      </form>
+    </section>
+
+    <section id="appPanel" class="hidden">
+      <div class="welcome-row">
+        <div><h2>Jou besigheidsoorsig</h2><p id="signedInAs" class="muted"></p></div>
+        <button id="refreshBtn" class="secondary">Verfris data</button>
+      </div>
+      <div class="stats">
+        <article class="stat"><span>Produkte</span><strong id="productCount">0</strong></article>
+        <article class="stat"><span>Verskaffers</span><strong id="supplierCount">0</strong></article>
+        <article class="stat"><span>Verkope / bestellings</span><strong id="salesCount">0</strong></article>
+        <article class="stat"><span>Uitgawes</span><strong id="expenseCount">0</strong></article>
+      </div>
+
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-tab="products">Produkte</button>
+        <button class="tab" data-tab="suppliers">Verskaffers</button>
+        <button class="tab" data-tab="sales">Verkope & bestellings</button>
+        <button class="tab" data-tab="expenses">Uitgawes</button>
+      </div>
+
+      <section class="panel tab-panel" id="productsPanel">
+        <h3>Voeg produk by</h3>
+        <form id="productForm" class="form-grid">
+          <div><label for="productName">Produknaam *</label><input id="productName" required maxlength="120"></div>
+          <div><label for="productBrand">Reeks / geur</label><input id="productBrand" maxlength="120"></div>
+          <div><label for="productSize">Grootte (ml)</label><input id="productSize" type="number" min="0" step="1" value="50"></div>
+          <div><label for="productGrade">Graad</label><select id="productGrade"><option>OUD</option><option>Grade C</option><option>Grade B</option><option>Grade A</option><option>Grade A+</option><option>Ander</option></select></div>
+          <div><label for="productCost">Eenheidskoste (R)</label><input id="productCost" type="number" min="0" step="0.01" value="0"></div>
+          <div><label for="productPrice">Verkoopprys (R)</label><input id="productPrice" type="number" min="0" step="0.01" value="0"></div>
+          <div><label for="productStock">Voorraad (eenhede)</label><input id="productStock" type="number" min="0" step="1" value="0"></div>
+          <div class="full"><label for="productNotes">Notas</label><textarea id="productNotes" rows="2"></textarea></div>
+          <div class="full"><button type="submit">Stoor produk</button><p id="productMessage" class="message" role="status"></p></div>
+        </form>
+        <div class="table-wrap"><table><thead><tr><th>Produk</th><th>Grootte</th><th>Graad</th><th>Koste</th><th>Prys</th><th>Wins / eenheid</th><th>Voorraad</th><th></th></tr></thead><tbody id="productsTable"></tbody></table></div>
+      </section>
+
+      <section class="panel tab-panel hidden" id="suppliersPanel">
+        <h3>Voeg verskaffer by</h3>
+        <form id="supplierForm" class="form-grid">
+          <div><label for="supplierName">Verskaffernaam *</label><input id="supplierName" required maxlength="150"></div>
+          <div><label for="supplierContact">Kontakpersoon</label><input id="supplierContact" maxlength="120"></div>
+          <div><label for="supplierEmail">E-pos</label><input id="supplierEmail" type="email"></div>
+          <div><label for="supplierPhone">Telefoon</label><input id="supplierPhone" maxlength="40"></div>
+          <div class="full"><label for="supplierNotes">Notas</label><textarea id="supplierNotes" rows="2"></textarea></div>
+          <div class="full"><button type="submit">Stoor verskaffer</button><p id="supplierMessage" class="message" role="status"></p></div>
+        </form>
+        <div class="table-wrap"><table><thead><tr><th>Verskaffer</th><th>Kontakpersoon</th><th>E-pos</th><th>Telefoon</th><th>Notas</th><th></th></tr></thead><tbody id="suppliersTable"></tbody></table></div>
+      </section>
+
+      <section class="panel tab-panel hidden" id="salesPanel">
+        <h3>Registreer verkoop / bestelling</h3>
+        <form id="saleForm" class="form-grid">
+          <div><label for="saleDate">Datum</label><input id="saleDate" type="date" required></div>
+          <div><label for="saleCustomer">Kliëntnaam</label><input id="saleCustomer" maxlength="150"></div>
+          <div><label for="saleDescription">Beskrywing *</label><input id="saleDescription" required maxlength="180"></div>
+          <div><label for="saleQty">Hoeveelheid</label><input id="saleQty" type="number" min="1" step="1" value="1" required></div>
+          <div><label for="saleTotal">Totale bedrag (R)</label><input id="saleTotal" type="number" min="0" step="0.01" required></div>
+          <div><label for="saleStatus">Status</label><select id="saleStatus"><option>Nuuts</option><option>Betaal</option><option>In produksie</option><option>Gereed</option><option>Afgelewer</option><option>Gekanselleer</option></select></div>
+          <div class="full"><button type="submit">Stoor verkoop</button><p id="saleMessage" class="message" role="status"></p></div>
+        </form>
+        <div class="table-wrap"><table><thead><tr><th>Datum</th><th>Kliënt</th><th>Beskrywing</th><th>Hoeveelheid</th><th>Totaal</th><th>Status</th><th></th></tr></thead><tbody id="salesTable"></tbody></table></div>
+      </section>
+
+      <section class="panel tab-panel hidden" id="expensesPanel">
+        <h3>Registreer uitgawe</h3>
+        <form id="expenseForm" class="form-grid">
+          <div><label for="expenseDate">Datum</label><input id="expenseDate" type="date" required></div>
+          <div><label for="expenseCategory">Kategorie *</label><input id="expenseCategory" required maxlength="100" placeholder="bv. Bottels, olie, aflewering"></div>
+          <div><label for="expenseDescription">Beskrywing</label><input id="expenseDescription" maxlength="180"></div>
+          <div><label for="expenseAmount">Bedrag (R)</label><input id="expenseAmount" type="number" min="0" step="0.01" required></div>
+          <div class="full"><button type="submit">Stoor uitgawe</button><p id="expenseMessage" class="message" role="status"></p></div>
+        </form>
+        <div class="table-wrap"><table><thead><tr><th>Datum</th><th>Kategorie</th><th>Beskrywing</th><th>Bedrag</th><th></th></tr></thead><tbody id="expensesTable"></tbody></table></div>
+      </section>
+
+      <p id="appMessage" class="message" role="status"></p>
+      <p class="footnote">Veiligheid: data word deur Supabase Row Level Security beskerm. Moenie geheime/service-role sleutels in hierdie web-app plaas nie. Maak gereeld ’n databasis-uitvoer/backup.</p>
+    </section>
+  </main>
+  <footer>DNA Fragrances · Significantly You</footer>
+  <script src="/config.js"></script>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
