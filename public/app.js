@@ -44,9 +44,10 @@ if (!configReady) {
   supabase = createClient(window.DNA_SUPABASE_URL, window.DNA_SUPABASE_ANON_KEY, {
     auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
   });
-  const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-    if (session?.user) showLoggedIn(session.user); else showLoggedOut();
-  });
+const { data, error } = await supabase.auth.signInWithPassword({
+  email: email,
+  password: password
+});
   supabase.auth.getSession().then(({ data, error }) => {
     if (error) msg("authMessage", error.message, true);
     if (data.session?.user) showLoggedIn(data.session.user);
